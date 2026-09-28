@@ -280,6 +280,15 @@ body.dark .forecast_min {
 }
 
 /* States */
+.state_loading,
+.state_error,
+.state_initial {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
 .state_message {
   text-align: center;
   padding: 40px;

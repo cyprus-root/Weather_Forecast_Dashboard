@@ -77,10 +77,20 @@ function App() {
       </div>
 
       <div className="weather_container">
-        {loading && <p className="state_message">Loading weather data...</p>}
-        {error && <p className="state_message error">{error}</p>}
+        {loading && (
+          <div className="state_loading">
+            <p className="state_message">Loading weather data...</p>
+          </div>
+        )}
+        {error && (
+          <div className="state_error">
+            <p className="state_message error">{error}</p>
+          </div>
+        )}
         {!loading && !error && !weatherData && (
-          <p className="state_message">Search for a city to see the weather</p>
+          <div className="state_initial">
+            <p className="state_message">Search for a city to see the weather</p>
+          </div>
         )}
         {!loading && !error && weatherData && (
           <Weather_Card data={weatherData} />
