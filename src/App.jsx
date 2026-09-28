@@ -1,6 +1,14 @@
+import { useState } from 'react'
 import './App.css'
+import Search_Bar from './components/Search_Bar.jsx'
 
 function App() {
+  const [searchCity, setSearchCity] = useState('')
+
+  const handleSearch = (city) => {
+    setSearchCity(city)
+  }
+
   return (
     <div className="container">
 
@@ -12,14 +20,7 @@ function App() {
         </div>
       </header>
 
-      <div className="search_container">
-        <input
-          className="search_input"
-          type="text"
-          placeholder="Search for a city..."
-        />
-        <button className="search_btn">Search</button>
-      </div>
+      <Search_Bar onSearch={handleSearch} />
 
       <div className="history_container">
         <h3 className="history_title">Recent Searches</h3>
@@ -27,7 +28,9 @@ function App() {
       </div>
 
       <div className="weather_container">
-        <p className="state_message">Search for a city to see the weather</p>
+        <p className="state_message">
+          {searchCity ? `Searching for: ${searchCity}` : 'Search for a city to see the weather'}
+        </p>
       </div>
 
       <div className="forecast_container">
