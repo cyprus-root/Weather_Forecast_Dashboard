@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import Search_Bar from './components/Search_Bar.jsx'
+import Weather_Card from './components/Weather_Card.jsx'
 
 function App() {
   const [searchCity, setSearchCity] = useState('')
@@ -82,10 +83,7 @@ function App() {
           <p className="state_message">Search for a city to see the weather</p>
         )}
         {!loading && !error && weatherData && (
-          <div>
-            <p className="state_message">Weather data for {weatherData.name}, {weatherData.country}</p>
-            <p className="state_message">Temperature: {weatherData.current.temperature_2m}°C</p>
-          </div>
+          <Weather_Card data={weatherData} />
         )}
       </div>
 
