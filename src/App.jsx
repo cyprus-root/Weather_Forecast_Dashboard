@@ -2,12 +2,17 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import Search_Bar from './components/Search_Bar.jsx'
 import Weather_Card from './components/Weather_Card.jsx'
+import Search_History from './components/Search_History.jsx'
 
 function App() {
   const [searchCity, setSearchCity] = useState('')
   const [weatherData, setWeatherData] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [searchHistory, setSearchHistory] = useState(() => {
+    const saved = localStorage.getItem('searchHistory')
+    return saved ? JSON.parse(saved) : []
+  })
 
   const fetchWeather = async (city) => {
     setLoading(true)
@@ -50,6 +55,15 @@ function App() {
 
   const handleSearch = (city) => {
     setSearchCity(city)
+    setSearchHistory((prev) => {
+      const filtered = prev.filter((item) => item.toLowerCase() !== city.toLowerCase())
+      const updated = [city, ...filtered].slice(0, 5)
+      return updated
+    })
+  }
+
+  const handleSelectHistory = (city) => {
+    setSearchCity(city)
   }
 
   useEffect(() => {
@@ -57,6 +71,10 @@ function App() {
       fetchWeather(searchCity)
     }
   }, [searchCity])
+
+  useEffect(() => {
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
+  }, [searchHistory])
 
   return (
     <div className="container">
@@ -71,10 +89,7 @@ function App() {
 
       <Search_Bar onSearch={handleSearch} />
 
-      <div className="history_container">
-        <h3 className="history_title">Recent Searches</h3>
-        <div className="history_list"></div>
-      </div>
+      <Search_History history={searchHistory} onSelect={handleSelectHistory} />
 
       <div className="weather_container">
         {loading && (
