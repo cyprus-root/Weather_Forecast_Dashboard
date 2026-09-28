@@ -27,9 +27,16 @@ const weatherCodeMap = {
   99: { icon: '⛈️', label: 'Thunderstorm with Heavy Hail' },
 }
 
-function Weather_Card({ data }) {
+function Weather_Card({ data, unit }) {
   const { name, country, current } = data
   const weatherInfo = weatherCodeMap[current.weather_code] || { icon: '❓', label: 'Unknown' }
+
+  const convertTemp = (temp) => {
+    if (unit === 'F') {
+      return Math.round((temp * 9 / 5) + 32)
+    }
+    return Math.round(temp)
+  }
 
   return (
     <div className="weather_card">
@@ -37,7 +44,7 @@ function Weather_Card({ data }) {
         <div className="weather_icon">{weatherInfo.icon}</div>
         <div>
           <div className="weather_city">{name}, {country}</div>
-          <div className="weather_temp">{current.temperature_2m}°C</div>
+          <div className="weather_temp">{convertTemp(current.temperature_2m)}°{unit}</div>
           <div className="weather_condition">{weatherInfo.label}</div>
         </div>
       </div>
@@ -48,7 +55,7 @@ function Weather_Card({ data }) {
         </div>
         <div className="detail_item">
           <span className="detail_label">Feels Like</span>
-          <span>{current.apparent_temperature}°C</span>
+          <span>{convertTemp(current.apparent_temperature)}°{unit}</span>
         </div>
         <div className="detail_item">
           <span className="detail_label">Wind Speed</span>

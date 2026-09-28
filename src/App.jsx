@@ -14,6 +14,8 @@ function App() {
     const saved = localStorage.getItem('searchHistory')
     return saved ? JSON.parse(saved) : []
   })
+  const [darkMode, setDarkMode] = useState(false)
+  const [unit, setUnit] = useState('C')
 
   const fetchWeather = async (city) => {
     setLoading(true)
@@ -67,6 +69,14 @@ function App() {
     setSearchCity(city)
   }
 
+  const toggleDarkMode = () => {
+    setDarkMode((prev) => !prev)
+  }
+
+  const toggleUnit = () => {
+    setUnit((prev) => (prev === 'C' ? 'F' : 'C'))
+  }
+
   useEffect(() => {
     if (searchCity) {
       fetchWeather(searchCity)
@@ -77,14 +87,26 @@ function App() {
     localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
   }, [searchHistory])
 
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark')
+    } else {
+      document.body.classList.remove('dark')
+    }
+  }, [darkMode])
+
   return (
     <div className="container">
 
       <header className="header">
         <h1 className="header_title">Weather Forecast Dashboard</h1>
         <div className="header_controls">
-          <button className="toggle_btn">°C / °F</button>
-          <button className="toggle_btn">Dark Mode</button>
+          <button className="toggle_btn" onClick={toggleUnit}>
+            °{unit}
+          </button>
+          <button className="toggle_btn" onClick={toggleDarkMode}>
+            {darkMode ? 'Light Mode' : 'Dark Mode'}
+          </button>
         </div>
       </header>
 
@@ -109,11 +131,11 @@ function App() {
           </div>
         )}
         {!loading && !error && weatherData && (
-          <Weather_Card data={weatherData} />
+          <Weather_Card data={weatherData} unit={unit} />
         )}
       </div>
 
-      {weatherData && <Weather_Forecast daily={weatherData.daily} />}
+      {weatherData && <Weather_Forecast daily={weatherData.daily} unit={unit} />}
 
     </div>
   )

@@ -27,12 +27,19 @@ const weatherCodeMap = {
   99: { icon: '⛈️', label: 'Thunderstorm with Heavy Hail' },
 }
 
-function Weather_Forecast({ daily }) {
+function Weather_Forecast({ daily, unit }) {
   const formatDate = (dateStr) => {
     const date = new Date(dateStr)
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     return `${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()}`
+  }
+
+  const convertTemp = (temp) => {
+    if (unit === 'F') {
+      return Math.round((temp * 9 / 5) + 32)
+    }
+    return Math.round(temp)
   }
 
   return (
@@ -46,9 +53,9 @@ function Weather_Forecast({ daily }) {
               <div className="forecast_day">{formatDate(time)}</div>
               <div className="forecast_icon">{weatherInfo.icon}</div>
               <div className="forecast_temps">
-                <span className="forecast_max">{daily.temperature_2m_max[index]}°</span>
+                <span className="forecast_max">{convertTemp(daily.temperature_2m_max[index])}°</span>
                 {' / '}
-                <span className="forecast_min">{daily.temperature_2m_min[index]}°</span>
+                <span className="forecast_min">{convertTemp(daily.temperature_2m_min[index])}°</span>
               </div>
             </div>
           )
