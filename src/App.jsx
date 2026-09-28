@@ -3,6 +3,7 @@ import './App.css'
 import Search_Bar from './components/Search_Bar.jsx'
 import Weather_Card from './components/Weather_Card.jsx'
 import Search_History from './components/Search_History.jsx'
+import Weather_Forecast from './components/Weather_Forecast.jsx'
 
 function App() {
   const [searchCity, setSearchCity] = useState('')
@@ -112,10 +113,7 @@ function App() {
         )}
       </div>
 
-      <div className="forecast_container">
-        <h3 className="forecast_title">5-Day Forecast</h3>
-        <div className="forecast_list"></div>
-      </div>
+      {weatherData && <Weather_Forecast daily={weatherData.daily} />}
 
     </div>
   )
